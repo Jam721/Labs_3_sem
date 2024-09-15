@@ -9,9 +9,11 @@ namespace Lab4
 
         private Button? _buttonLoadFile;
         private Button? _buttonSearch;
+        
         private TextBox? _textBoxLoadTime;
         private TextBox? _textBoxSearch;
         private TextBox? _textBoxSearchTime;
+        
         private ListBox? _listBoxResults;
 
         public Form1()
