@@ -115,48 +115,49 @@ namespace Lab5
                 MessageBox.Show("Введите слово для поиска!");
                 return;
             }
-            
+
             if (string.IsNullOrWhiteSpace(_textBoxMaxDistance?.Text))
             {
-                MessageBox.Show("Введите слово для поиска!");
+                MessageBox.Show("Введите максимальное расстояние!");
                 return;
             }
-            
-            _stopwatch.Start();
+
+            _stopwatch.Restart();
 
             _listBoxResults?.BeginUpdate();
             _listBoxResults?.Items.Clear();
-            
-            for(int l = 0; l<_wordsList.Count; l++)
+
+            for (int l = 0; l < _wordsList.Count; l++)
             {
                 var m = _wordsList[l].Length;
                 var n = searchTerm!.Length;
 
                 var maxDistance = Convert.ToInt32(_textBoxMaxDistance?.Text);
                 
-
                 int[,] matrix = new int[m + 1, n + 1];
-
+                
                 for (var i = 0; i <= m; i++) matrix[i, 0] = i;
                 for (var i = 0; i <= n; i++) matrix[0, i] = i;
-
+                
                 for (int i = 1; i <= m; i++)
                 {
                     for (int j = 1; j <= n; j++)
                     {
-                        int cost = (_wordsList[l][i - 1] == searchTerm[j - 1]) ? 1 : 0;
-
-                        matrix[i, j] = Math.Min(Math.Min(matrix[i - 1, j] + 1, matrix[i, j - 1] + 1),
-                            matrix[i - 1, j - 1] + cost);
+                        int cost = (_wordsList[l][i - 1] == searchTerm[j - 1]) ? 0 : 1;
+                        
+                        matrix[i, j] = Math.Min(
+                            Math.Min(matrix[i - 1, j] + 1, matrix[i, j - 1] + 1),
+                            matrix[i - 1, j - 1] + cost
+                        );
                     }
                 }
-
-                if (matrix[m, n] <= maxDistance)
+                
+                if (matrix[m, n] <= maxDistance && _wordsList[l]!="")
                 {
                     _listBoxResults?.Items.Add(_wordsList[l]);
                 }
             }
-            
+
             _listBoxResults?.EndUpdate();
 
             _stopwatch.Stop();
