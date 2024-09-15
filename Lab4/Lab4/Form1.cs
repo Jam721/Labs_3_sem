@@ -107,6 +107,7 @@ namespace Lab4
             _stopwatch.Start();
 
             _listBoxResults?.BeginUpdate();
+            _listBoxResults?.Items.Clear();
 
             foreach (var word in _wordsList)
             {
