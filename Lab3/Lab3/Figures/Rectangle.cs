@@ -19,14 +19,14 @@ public class Rectangle : GeometricFigure, IPrint, IComparable
                                          $"Прямоугольник высотой: {Height}\n" +
                                          $"Прямоугольник площадью: {Result()}\n";
     
-    public override void Print() => Console.WriteLine(this.ToString());
+    public override void Print() => Console.WriteLine(ToString());
+    
     
     public override int CompareTo(object? obj)
     {
-        if (obj is GeometricFigure figure)
-        {
+        if (obj is GeometricFigure figure) 
             return Convert.ToDouble(Result()).CompareTo(Convert.ToDouble(figure.Result()));
-        }
+        
 
         throw new ArgumentException("Объект не является фигурой");
     }
