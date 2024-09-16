@@ -1,65 +1,58 @@
 ﻿using System.Collections;
 
-namespace Lab3.Additional;
-
-public class SimpleStackItems<T>
+namespace Lab3.Additional
 {
-    public T? Element { get; set; }
-    public SimpleStackItems<T>? Next { get; set; }
-}
-
-public class SimpleStack<T> : IEnumerable<T>
-{
-    SimpleStackItems<T>? Head { get; set; }
-    SimpleStackItems<T>? _tail;
-
-    public bool IsEmpty { get { return Head == null; } }
-    
-    public void Add(T value)
+    public class SimpleStackItems<T>
     {
-        if (IsEmpty)
-        {
-            _tail = Head = new SimpleStackItems<T>() { Element = value, Next = null };
-        }
-        else
-        {
-            var item = new SimpleStackItems<T>() {Element = value, Next = null};
-            if (_tail != null) _tail.Next = item;
-            _tail = item;
-        }
-    }
-    public T Pop()
-    {
-        if (IsEmpty) throw new Exception("Пусто");
-        var result = Head!.Element;
-        Head = Head.Next;
-        if (Head == null)
-            _tail = null;
-        return result ?? throw new InvalidOperationException();
+        public T? Element { get; set; }
+        public SimpleStackItems<T>? Next { get; set; }
     }
 
-    public override string ToString()
+    public class SimpleStack<T> : IEnumerable<T>
     {
-        string s = "";
-        foreach (var i in this)
-        {
-            s += i + " ";
-        }
-            
-        return s;
-    }
+        private SimpleStackItems<T>? _head;
 
-    public IEnumerator<T> GetEnumerator()
-    {
-        var current = Head;
-        while (current != null)
+        public bool IsEmpty => _head == null;
+
+        public void Add(T value)
         {
-            if (current.Element != null) yield return current.Element;
-            current = current.Next;
+            var newItem = new SimpleStackItems<T> { Element = value, Next = _head };
+            _head = newItem;
         }
-    }
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
+
+        public T Pop()
+        {
+            if (IsEmpty) throw new InvalidOperationException("Сьек пуст");
+
+            var result = _head!.Element;
+            _head = _head.Next;
+
+            return result ?? throw new InvalidOperationException();
+        }
+
+        public override string ToString()
+        {
+            string s = "";
+            foreach (var item in this)
+            {
+                s += item + " ";
+            }
+            return s;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var current = _head;
+            while (current != null)
+            {
+                if (current.Element != null) yield return current.Element;
+                current = current.Next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }
